@@ -5,6 +5,7 @@ import com.myshoppingcart.currencyconverter.entities.ForexRate;
 import com.myshoppingcart.currencyconverter.services.CurrencyService;
 import com.myshoppingcart.currencyconverter.services.ForexRateService;
 import com.myshoppingcart.currencyconverter.vos.CurrencyCodeMapValue;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -17,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @SpringBootApplication
 public class CurrencyConverterApplication implements CommandLineRunner {
 	@Autowired
@@ -40,6 +42,7 @@ public class CurrencyConverterApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+		log.info("Inside run() method of CurrencyConverterApplication");
 		List<Currency> lstCurrencies = currencyService.create_on_load();
 
 		Map<String, CurrencyCodeMapValue> currencyCodeMap = currencyService.getCountryCodeMap(lstCurrencies);

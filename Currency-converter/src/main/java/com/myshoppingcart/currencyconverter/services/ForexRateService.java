@@ -4,10 +4,8 @@ import com.myshoppingcart.currencyconverter.entities.ForexRateBackup;
 import com.myshoppingcart.currencyconverter.repositories.ForexRateBackupRepository;
 import com.myshoppingcart.currencyconverter.vos.CurrencyCodeMapValue;
 import com.myshoppingcart.currencyconverter.vos.ForexRateWrapper;
-import com.myshoppingcart.currencyconverter.vos.ResponseTemplateVO;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,6 +52,7 @@ public class ForexRateService{
     }
 
     public List<ForexRateBackup> create_backup(){
+        log.info("Inside create_backup() method of ForexRateService");
         Long id;
         Date created_on = new Date();
 
@@ -75,11 +74,12 @@ public class ForexRateService{
     }
 
     public List<ForexRate> refreshForexRateInDB(Map<String, CurrencyCodeMapValue> currencyCodeMap) {
+        log.info("Inside refreshForexRateInDB() method of ForexRateService");
+
         List<ForexRateBackup> lst = this.create_backup();
 
-        log.info("Inside getUserWithDepartment of ForexRateService ... ");
 
-        ForexRateWrapper wrapper = restTemplate.getForObject("https://api.exchangeratesapi.io/v1/latest?access_key=XXXXXXXXXXX&base=usd", ForexRateWrapper.class);
+        ForexRateWrapper wrapper = restTemplate.getForObject("https://api.exchangeratesapi.io/v1/latest?access_key=XXXXXXXXX&base=usd", ForexRateWrapper.class);
         List<ForexRate>  allData = wrapper.toWrap(currencyCodeMap);
         return forexRateRepository.saveAll(allData);
     }

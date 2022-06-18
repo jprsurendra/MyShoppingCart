@@ -16,8 +16,9 @@ public class CurrencyService {
     @Autowired
     private CurrencyRepository currencyRepository;
 
-
     public List<Currency> create_on_load(){
+        log.info("Inside create_on_load() method of CurrencyService");
+
         if(currencyRepository.count() == 0) {
             Date created_on = new Date();
             List<Currency> lstCurrency = new ArrayList<>();
@@ -204,6 +205,8 @@ public class CurrencyService {
     }
 
     public Map<String, CurrencyCodeMapValue> getCountryCodeMap(List<Currency> lstCurrencies){
+        log.info("Inside getCountryCodeMap() method of CurrencyService");
+
         Map<String, CurrencyCodeMapValue> map = new HashMap<>();
         if(lstCurrencies==null){
             lstCurrencies = currencyRepository.findAll();
