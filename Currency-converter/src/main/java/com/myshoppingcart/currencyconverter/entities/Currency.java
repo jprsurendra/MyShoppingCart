@@ -1,8 +1,7 @@
 package com.myshoppingcart.currencyconverter.entities;
 
-import lombok.AllArgsConstructor;
+
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -39,17 +38,6 @@ public class Currency {
     public Currency(String countryName, String countryCode, String currencyCode, String currencyName, String forexCurrencyName, Date createdOrUpdatedOn) {
         this(null, countryName, countryCode, currencyCode, currencyName, forexCurrencyName, true, createdOrUpdatedOn, createdOrUpdatedOn);
     }
-//    public Currency(Long id, String country_name, String country_code, String currency_code, String currency_name, String forex_currency_name, Boolean is_active, Date created_on, Date updated_on) {
-//        this.id = id;
-//        this.country_name = country_name;
-//        this.country_code = country_code;
-//        this.currency_code = currency_code;
-//        this.currency_name = currency_name;
-//        this.forex_currency_name = forex_currency_name;
-//        this.is_active = is_active;
-//        this.created_on = created_on;
-//        this.updated_on = updated_on;
-//    }
 
     public Currency(Long id, String countryName, String countryCode, String currencyCode, String currencyName, String forexCurrencyName, Boolean isActive, Date createdOn, Date updatedOn) {
         this.id = id;

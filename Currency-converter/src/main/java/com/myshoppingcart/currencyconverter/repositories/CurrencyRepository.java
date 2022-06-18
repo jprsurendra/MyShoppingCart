@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface CurrencyRepository extends JpaRepository<Currency, Long> {
-//    List<Currency> create_on_load(Iterable<Currency> entities);
+
 }

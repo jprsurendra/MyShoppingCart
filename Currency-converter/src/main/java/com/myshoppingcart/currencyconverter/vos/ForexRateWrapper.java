@@ -2,7 +2,6 @@ package com.myshoppingcart.currencyconverter.vos;
 
 import com.myshoppingcart.currencyconverter.entities.Currency;
 import com.myshoppingcart.currencyconverter.entities.ForexRate;
-import com.myshoppingcart.currencyconverter.services.CurrencyService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

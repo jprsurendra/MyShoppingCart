@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -55,12 +54,9 @@ public class ForexRateService{
         log.info("Inside create_backup() method of ForexRateService");
         Long id;
         Date created_on = new Date();
-
         List<ForexRate> allForexRateData = forexRateRepository.findAll();
 
         // List<ForexRateBackup> allData = allForexRateData.stream().map(post -> modelMapper.map(post, ForexRateBackup.class)).collect(Collectors.toList());
-        // OrderDTO dto = modelMapper.map(order, OrderDTO.class);
-
         List<ForexRateBackup> allData = new ArrayList<>();
         for(ForexRate entity : allForexRateData) { // for(ForexRateBackup entity : allData) {
             ForexRateBackup backupEntity = modelMapper.map(entity, ForexRateBackup.class);

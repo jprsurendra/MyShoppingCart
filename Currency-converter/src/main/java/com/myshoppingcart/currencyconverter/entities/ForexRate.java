@@ -5,10 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-//import javax.persistence.Entity;
-//import javax.persistence.GeneratedValue;
-//import javax.persistence.GenerationType;
-//import javax.persistence.Id;
 
 import java.math.BigDecimal;
 
@@ -33,15 +29,10 @@ public class ForexRate {
     @Column(name = "conversion_rate", precision = 25, scale = 6)
     private BigDecimal conversionRate;
 
-//    @Column(name = "without_uplift_conversion_rate", precision = 25, scale = 6)
-//    private BigDecimal withoutUpliftConversionRate;
-
     @Column(name="updated_on", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     @Temporal(TemporalType.TIMESTAMP)
     private java.util.Date updatedOn;
 
-    //    @Column(columnDefinition="bit default 0")
     private Boolean isActive;
-
 
 }
