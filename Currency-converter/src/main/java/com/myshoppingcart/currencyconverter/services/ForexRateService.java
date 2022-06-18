@@ -15,6 +15,7 @@ import com.myshoppingcart.currencyconverter.entities.ForexRate;
 import com.myshoppingcart.currencyconverter.repositories.ForexRateRepository;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -58,24 +59,29 @@ public class ForexRateService{
 
         List<ForexRate> allForexRateData = forexRateRepository.findAll();
 
-        List<ForexRateBackup> allData = allForexRateData.stream().map(post -> modelMapper.map(post, ForexRateBackup.class)).collect(Collectors.toList());
+        // List<ForexRateBackup> allData = allForexRateData.stream().map(post -> modelMapper.map(post, ForexRateBackup.class)).collect(Collectors.toList());
+        // OrderDTO dto = modelMapper.map(order, OrderDTO.class);
 
-        for(ForexRateBackup entity : allData) {
-            entity.setForex_rate_id(entity.getId());
-            entity.setId(null);
-            entity.setBackup_on(created_on);
+        List<ForexRateBackup> allData = new ArrayList<>();
+        for(ForexRate entity : allForexRateData) { // for(ForexRateBackup entity : allData) {
+            ForexRateBackup backupEntity = modelMapper.map(entity, ForexRateBackup.class);
+            backupEntity.setForex_rate_id(entity.getId());
+            backupEntity.setId(null);
+            backupEntity.setBackup_on(created_on);
+            allData.add(backupEntity);
         }
 
         return forexRateBackupRepository.saveAll(allData);
     }
 
     public List<ForexRate> refreshForexRateInDB(Map<String, CurrencyCodeMapValue> currencyCodeMap) {
-        log.info("Inside getUserWithDepartment of ForexRateService");
+        List<ForexRateBackup> lst = this.create_backup();
 
-        ForexRateWrapper wrapper = restTemplate.getForObject("https://api.exchangeratesapi.io/v1/latest?access_key=XXXXXXXXXXXXXXXXXXXXXX&base=usd", ForexRateWrapper.class);
+        log.info("Inside getUserWithDepartment of ForexRateService ... ");
+
+        ForexRateWrapper wrapper = restTemplate.getForObject("https://api.exchangeratesapi.io/v1/latest?access_key=XXXXXXXXXXX&base=usd", ForexRateWrapper.class);
         List<ForexRate>  allData = wrapper.toWrap(currencyCodeMap);
         return forexRateRepository.saveAll(allData);
-
     }
 
 }
