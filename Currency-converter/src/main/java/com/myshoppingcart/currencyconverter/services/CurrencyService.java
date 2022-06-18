@@ -2,13 +2,12 @@ package com.myshoppingcart.currencyconverter.services;
 
 import com.myshoppingcart.currencyconverter.entities.Currency;
 import com.myshoppingcart.currencyconverter.repositories.CurrencyRepository;
+import com.myshoppingcart.currencyconverter.vos.CurrencyCodeMapValue;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -16,6 +15,7 @@ public class CurrencyService {
 
     @Autowired
     private CurrencyRepository currencyRepository;
+
 
     public List<Currency> create_on_load(){
         if(currencyRepository.count() == 0) {
@@ -198,9 +198,20 @@ public class CurrencyService {
 
             return currencyRepository.saveAll(lstCurrency);
         }else{
-            return new ArrayList<>();
+            return currencyRepository.findAll();
         }
 
+    }
+
+    public Map<String, CurrencyCodeMapValue> getCountryCodeMap(List<Currency> lstCurrencies){
+        Map<String, CurrencyCodeMapValue> map = new HashMap<>();
+        if(lstCurrencies==null){
+            lstCurrencies = currencyRepository.findAll();
+        }
+        for (Currency currency : lstCurrencies ) {
+            map.put(currency.getCurrencyCode().toUpperCase(), new CurrencyCodeMapValue(currency.getId(), currency));
+        }
+        return map;
     }
 }
 

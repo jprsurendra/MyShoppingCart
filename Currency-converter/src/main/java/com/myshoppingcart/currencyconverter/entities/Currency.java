@@ -14,34 +14,52 @@ public class Currency {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String country_name;
-    private String country_code;
-    private String currency_code;
-    private String currency_name;
-    private String forex_currency_name;
-    private Boolean is_active;
+    @Column(name = "country_name", length = 255)
+    private String countryName;
+    @Column(name = "country_code", length = 10)
+    private String countryCode;
+    @Column(name = "currency_code", length = 10)
+    private String currencyCode;
+    @Column(name = "currency_name", length = 255)
+    private String currencyName;
+    @Column(name = "forex_currency_name", length = 255)
+    private String forexCurrencyName;
+    @Column(name = "is_active")
+    private Boolean isActive;
 
     @Column(name="created_on", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     @Temporal(TemporalType.TIMESTAMP)
-    private java.util.Date created_on;
+    private java.util.Date createdOn;
 
     @Column(name="updated_on", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     @Temporal(TemporalType.TIMESTAMP)
-    private java.util.Date updated_on;
+    private java.util.Date updatedOn;
 
     public Currency(){}
-    public Currency(String country_name, String country_code, String currency_code, String currency_name, String forex_currency_name, Date created_or_updated_on) {
-        this(null, country_name, country_code, currency_code, currency_name, forex_currency_name, true, created_or_updated_on, created_or_updated_on);
+    public Currency(String countryName, String countryCode, String currencyCode, String currencyName, String forexCurrencyName, Date createdOrUpdatedOn) {
+        this(null, countryName, countryCode, currencyCode, currencyName, forexCurrencyName, true, createdOrUpdatedOn, createdOrUpdatedOn);
     }
-    public Currency(Long id, String country_name, String country_code, String currency_code, String currency_name, String forex_currency_name, Boolean is_active, Date created_on, Date updated_on) {
+//    public Currency(Long id, String country_name, String country_code, String currency_code, String currency_name, String forex_currency_name, Boolean is_active, Date created_on, Date updated_on) {
+//        this.id = id;
+//        this.country_name = country_name;
+//        this.country_code = country_code;
+//        this.currency_code = currency_code;
+//        this.currency_name = currency_name;
+//        this.forex_currency_name = forex_currency_name;
+//        this.is_active = is_active;
+//        this.created_on = created_on;
+//        this.updated_on = updated_on;
+//    }
+
+    public Currency(Long id, String countryName, String countryCode, String currencyCode, String currencyName, String forexCurrencyName, Boolean isActive, Date createdOn, Date updatedOn) {
         this.id = id;
-        this.country_name = country_name;
-        this.country_code = country_code;
-        this.currency_code = currency_code;
-        this.currency_name = currency_name;
-        this.forex_currency_name = forex_currency_name;
-        this.is_active = is_active;
-        this.created_on = created_on;
-        this.updated_on = updated_on;
+        this.countryName = countryName;
+        this.countryCode = countryCode;
+        this.currencyCode = currencyCode;
+        this.currencyName = currencyName;
+        this.forexCurrencyName = forexCurrencyName;
+        this.isActive = isActive;
+        this.createdOn = createdOn;
+        this.updatedOn = updatedOn;
     }
 }
