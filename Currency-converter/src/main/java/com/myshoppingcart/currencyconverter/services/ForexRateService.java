@@ -77,7 +77,7 @@ public class ForexRateService{
 
         List<ForexRateBackup> lst = this.create_backup();
 
-        ForexRateWrapper wrapper = restTemplate.getForObject("https://api.exchangeratesapi.io/v1/latest?access_key=dda6fab9efc0d781f02ff1bf0f8b1c2b&base=usd", ForexRateWrapper.class);
+        ForexRateWrapper wrapper = restTemplate.getForObject("https://api.exchangeratesapi.io/v1/latest?access_key=XXXXXXX&base=usd", ForexRateWrapper.class);
         List<ForexRate>  allData = wrapper.toWrap(currencyCodeMap);
         return forexRateRepository.saveAll(allData);
     }
