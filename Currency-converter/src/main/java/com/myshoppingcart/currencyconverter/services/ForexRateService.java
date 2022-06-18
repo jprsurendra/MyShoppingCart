@@ -3,6 +3,8 @@ package com.myshoppingcart.currencyconverter.services;
 import com.myshoppingcart.currencyconverter.entities.ForexRateBackup;
 import com.myshoppingcart.currencyconverter.repositories.ForexRateBackupRepository;
 import com.myshoppingcart.currencyconverter.vos.CurrencyCodeMapValue;
+import com.myshoppingcart.currencyconverter.vos.CurrencyConversionVO;
+import com.myshoppingcart.currencyconverter.vos.ForexRateVO;
 import com.myshoppingcart.currencyconverter.vos.ForexRateWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -13,6 +15,7 @@ import com.myshoppingcart.currencyconverter.entities.ForexRate;
 import com.myshoppingcart.currencyconverter.repositories.ForexRateRepository;
 import org.springframework.web.client.RestTemplate;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -74,12 +77,62 @@ public class ForexRateService{
 
         List<ForexRateBackup> lst = this.create_backup();
 
-
-        ForexRateWrapper wrapper = restTemplate.getForObject("https://api.exchangeratesapi.io/v1/latest?access_key=XXXXXXXXX&base=usd", ForexRateWrapper.class);
+        ForexRateWrapper wrapper = restTemplate.getForObject("https://api.exchangeratesapi.io/v1/latest?access_key=XXXXXXX&base=usd", ForexRateWrapper.class);
         List<ForexRate>  allData = wrapper.toWrap(currencyCodeMap);
         return forexRateRepository.saveAll(allData);
     }
 
+    public List<ForexRate> findAllForexRate(){
+        log.info("Inside findAllForexRate() method of ForexRateService");
+        return forexRateRepository.findAll();
+    }
+
+    public ForexRate findForexRateByCurrencyCode(String countryCode){
+        log.info("Inside findForexRateByCurrencyCode() method of ForexRateService");
+        List<ForexRate> lst = forexRateRepository.getByCountryCode(countryCode);
+        if(lst.size()>0){
+            return lst.get(0);
+        }else{
+            return null;
+        }
+    }
+    public ForexRateVO findForexRateVoByCurrencyCode(String currencyCode){
+        ForexRateVO forexRateVO = null;
+        try {
+            currencyCode = currencyCode.trim().toUpperCase();
+
+            if(currencyCode == "USD"){
+                forexRateVO = new ForexRateVO(currencyCode, currencyCode, 1);
+            }else{
+                forexRateVO = new ForexRateVO(this.findForexRateByCurrencyCode(currencyCode));
+            }
+
+            if(forexRateVO == null){
+                forexRateVO = new ForexRateVO("USD", currencyCode, BigDecimal.ZERO, BigDecimal.ZERO, "CurrencyCode (" +currencyCode + ") not found.");
+            }
+        }catch (Exception e){
+            if(currencyCode==null){
+                currencyCode = "--";
+            }
+            forexRateVO = new ForexRateVO("USD", currencyCode, BigDecimal.ZERO, BigDecimal.ZERO, "CurrencyCode (" +currencyCode + ") not found.");
+        }finally {
+            return forexRateVO;
+        }
+    }
+
+    public CurrencyConversionVO currencyConversion(CurrencyConversionVO vo){
+        BigDecimal fromAmount = vo.getFromAmount();
+        ForexRateVO forexRateToUSD = this.findForexRateVoByCurrencyCode(vo.getFromCurrencyCode());
+        ForexRateVO forexRateUSDTo = this.findForexRateVoByCurrencyCode(vo.getToCurrencyCode());
+
+        BigDecimal amountInUSD = fromAmount.multiply(forexRateToUSD.getReverseConversionRate());
+        vo.setToAmount(amountInUSD.multiply(forexRateUSDTo.getConversionRate()));
+
+        vo.setForexRateToUSD(forexRateToUSD);
+        vo.setForexRateUSDTo(forexRateUSDTo);
+
+        return vo;
+    }
 }
 
 
