@@ -38,7 +38,7 @@ public class ForexRateController {
         CurrencyConversionVO vo = new CurrencyConversionVO();
         vo.setFromCurrencyCode(currencyCodeFrom);
         vo.setToCurrencyCode(currencyCodeTo);
-        vo.setToAmount(amount);
+        vo.setFromAmount(amount);
         return forexRateService.currencyConversion(vo);
     }
 }

@@ -72,6 +72,17 @@ public class ForexRateService{
         return forexRateBackupRepository.saveAll(allData);
     }
 
+    public ForexRate findForexRateByCurrencyCode(String countryCode){
+        List<ForexRate> lst = forexRateRepository.findByToCurrency_CurrencyCode(countryCode);
+        if(lst.size() > 0){
+            return lst.get(0);
+        }else{
+            return null;
+        }
+    }
+
+
+
     public List<ForexRate> refreshForexRateInDB(Map<String, CurrencyCodeMapValue> currencyCodeMap) {
         log.info("Inside refreshForexRateInDB() method of ForexRateService");
 
@@ -87,15 +98,15 @@ public class ForexRateService{
         return forexRateRepository.findAll();
     }
 
-    public ForexRate findForexRateByCurrencyCode(String countryCode){
-        log.info("Inside findForexRateByCurrencyCode() method of ForexRateService");
-        List<ForexRate> lst = forexRateRepository.getByCountryCode(countryCode);
-        if(lst.size()>0){
-            return lst.get(0);
-        }else{
-            return null;
-        }
-    }
+//    public ForexRate findForexRateByCurrencyCode(String countryCode){
+//        log.info("Inside findForexRateByCurrencyCode() method of ForexRateService");
+//        List<ForexRate> lst = this.findByCountryCode(countryCode);
+//        if(lst.size()>0){
+//            return lst.get(0);
+//        }else{
+//            return null;
+//        }
+//    }
     public ForexRateVO findForexRateVoByCurrencyCode(String currencyCode){
         ForexRateVO forexRateVO = null;
         try {

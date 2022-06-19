@@ -5,6 +5,7 @@ import com.myshoppingcart.currencyconverter.entities.ForexRate;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 @Data
 public class ForexRateVO {
@@ -44,7 +45,7 @@ public class ForexRateVO {
         this.toCurrencyCode = toCurrencyCode;
         this.conversionRate = conversionRate;
         BigDecimal one = new BigDecimal(1);
-        this.reverseConversionRate = one.divide(this.conversionRate);
+        this.reverseConversionRate = one.divide(this.conversionRate, 6, RoundingMode.HALF_DOWN);
         this.errMessage="";
     }
 
