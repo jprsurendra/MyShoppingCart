@@ -40,7 +40,7 @@ public class ForexRateService{
 
     @Autowired
     public void setModelMapper(ModelMapper modelMapper) {
-        System.out.println("ForexRateService setter (setModelMapper) called");
+        log.info("Inside setModelMapper() method of ForexRateService");
         this.modelMapper = modelMapper;
 
         /*

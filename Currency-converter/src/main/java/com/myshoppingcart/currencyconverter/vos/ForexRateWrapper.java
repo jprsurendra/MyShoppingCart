@@ -5,6 +5,7 @@ import com.myshoppingcart.currencyconverter.entities.ForexRate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -12,6 +13,7 @@ import java.util.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Slf4j
 public class ForexRateWrapper {
     private Boolean success; // true
     private Long timestamp; // 1655554755
@@ -36,11 +38,11 @@ public class ForexRateWrapper {
                     entity.setUpdatedOn(created_on);
                     lst.add(entity);
                 }catch (Exception e){
-                    System.out.println(e.getMessage());
+                    log.info("Inside toWrap() method of ForexRateWrapper. Error: "+ e.getMessage());
                 }
             }
         }catch (Exception e2){
-            System.out.println(e2.getMessage());
+            log.info("Inside toWrap() method of ForexRateWrapper. Error: "+ e2.getMessage());
         }
         return lst;
     }
