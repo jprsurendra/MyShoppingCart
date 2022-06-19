@@ -45,8 +45,8 @@ public class CurrencyConverterApplication implements CommandLineRunner {
 		log.info("Inside run() method of CurrencyConverterApplication");
 		List<Currency> lstCurrencies = currencyService.createCurrencyListIfNotExist();
 
-		Map<String, CurrencyCodeMapValue> currencyCodeMap = currencyService.getCountryCodeMap(lstCurrencies);
-
-		List<ForexRate> lstForexRate = forexRateService.refreshForexRateInDB(currencyCodeMap);
+//		Map<String, CurrencyCodeMapValue> currencyCodeMap = currencyService.getCountryCodeMap(lstCurrencies);
+//
+//		List<ForexRate> lstForexRate = forexRateService.refreshForexRateInDB(currencyCodeMap);
 	}
 }

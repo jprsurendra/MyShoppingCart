@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Data
@@ -20,5 +22,23 @@ public class CurrencyConversionVO {
     private BigDecimal toAmount;
     private String fromCurrencyCode;
     private String toCurrencyCode;
+
+    public List<String> collectErrors(){
+        List<String> errs = new ArrayList<>();
+
+        if(toAmount == null){
+            errs.add("Currency conversion failed! There was an error on server. Please try again.");
+        }
+
+        if(forexRateToUSD!=null && forexRateToUSD.getErrMessage() != null){
+            errs.add(forexRateToUSD.getErrMessage());
+        }
+
+        if(forexRateUSDTo!=null && forexRateUSDTo.getErrMessage() != null){
+            errs.add(forexRateUSDTo.getErrMessage());
+        }
+
+        return errs;
+    }
 
 }

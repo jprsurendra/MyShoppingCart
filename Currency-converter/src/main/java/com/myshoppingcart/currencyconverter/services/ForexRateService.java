@@ -89,7 +89,7 @@ public class ForexRateService{
 
         List<ForexRateBackup> lst = this.createForexRateBackup();
 
-        ForexRateWrapper wrapper = restTemplate.getForObject("https://api.exchangeratesapi.io/v1/latest?access_key=XXXXXXX&base=usd", ForexRateWrapper.class);
+        ForexRateWrapper wrapper = restTemplate.getForObject("https://api.exchangeratesapi.io/v1/latest?access_key=XXXXXXXXX&base=usd", ForexRateWrapper.class);
         List<ForexRate>  allData = wrapper.toWrap(currencyCodeMap);
 
         //List<ForexRate> oldData = forexRateRepository.findAll();
@@ -122,32 +122,45 @@ public class ForexRateService{
             if(currencyCode == "USD"){
                 forexRateVO = new ForexRateVO(currencyCode, currencyCode, 1);
             }else{
-                forexRateVO = new ForexRateVO(this.findForexRateByCurrencyCode(currencyCode));
+                ForexRate forexRate = this.findForexRateByCurrencyCode(currencyCode);
+                if(forexRate == null){
+                    forexRateVO = new ForexRateVO("USD", currencyCode, null, null, "CurrencyCode (" +currencyCode + ") not found.");
+                }else {
+                    forexRateVO = new ForexRateVO(forexRate);
+                }
             }
 
-            if(forexRateVO == null){
-                forexRateVO = new ForexRateVO("USD", currencyCode, BigDecimal.ZERO, BigDecimal.ZERO, "CurrencyCode (" +currencyCode + ") not found.");
-            }
         }catch (Exception e){
             if(currencyCode==null){
                 currencyCode = "--";
             }
-            forexRateVO = new ForexRateVO("USD", currencyCode, BigDecimal.ZERO, BigDecimal.ZERO, "CurrencyCode (" +currencyCode + ") not found.");
+            forexRateVO = new ForexRateVO("USD", currencyCode, null, null, "CurrencyCode (" +currencyCode + ") not found.");
         }finally {
             return forexRateVO;
         }
     }
 
     public CurrencyConversionVO currencyConversion(CurrencyConversionVO vo){
+        ForexRateVO forexRateToUSD = null;
+        ForexRateVO forexRateUSDTo = null;
         BigDecimal fromAmount = vo.getFromAmount();
-        ForexRateVO forexRateToUSD = this.findForexRateVoByCurrencyCode(vo.getFromCurrencyCode());
-        ForexRateVO forexRateUSDTo = this.findForexRateVoByCurrencyCode(vo.getToCurrencyCode());
+
+        try {
+            forexRateToUSD = this.findForexRateVoByCurrencyCode(vo.getFromCurrencyCode());
+        }catch (Exception e1){
+            forexRateToUSD = new ForexRateVO(vo.getFromCurrencyCode(), "USD", null, null, e1.getMessage());
+        }
+        vo.setForexRateToUSD(forexRateToUSD);
+
+        try {
+            forexRateUSDTo = this.findForexRateVoByCurrencyCode(vo.getToCurrencyCode());
+        }catch (Exception e2){
+            forexRateUSDTo = new ForexRateVO( "USD", vo.getToCurrencyCode(),null, null, e2.getMessage());
+        }
+        vo.setForexRateUSDTo(forexRateUSDTo);
 
         BigDecimal amountInUSD = fromAmount.multiply(forexRateToUSD.getReverseConversionRate());
         vo.setToAmount(amountInUSD.multiply(forexRateUSDTo.getConversionRate()));
-
-        vo.setForexRateToUSD(forexRateToUSD);
-        vo.setForexRateUSDTo(forexRateUSDTo);
 
         return vo;
     }

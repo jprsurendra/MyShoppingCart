@@ -37,16 +37,18 @@ public class ForexRateVO {
         try {
             this.reset(forexRate.getBaseCurrency().getCurrencyCode(), forexRate.getToCurrency().getCurrencyCode(), forexRate.getConversionRate());
         }catch (Exception e){
-            errMessage = e.getMessage();
+            this.errMessage = e.getMessage();
         }
     }
+
+
     public void reset(String baseCurrencyCode, String toCurrencyCode, BigDecimal conversionRate) {
         this.baseCurrencyCode = baseCurrencyCode;
         this.toCurrencyCode = toCurrencyCode;
         this.conversionRate = conversionRate;
         BigDecimal one = new BigDecimal(1);
         this.reverseConversionRate = one.divide(this.conversionRate, 6, RoundingMode.HALF_DOWN);
-        this.errMessage="";
+        this.errMessage=null;
     }
 
 
