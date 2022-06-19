@@ -1,4 +1,4 @@
-package com.myshoppingcart.currencyconverter.web;
+package com.myshoppingcart.currencyconverter.controller;
 
 import com.myshoppingcart.currencyconverter.entities.*;
 import com.myshoppingcart.currencyconverter.services.*;
