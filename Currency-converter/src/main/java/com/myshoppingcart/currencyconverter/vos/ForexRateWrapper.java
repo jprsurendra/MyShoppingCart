@@ -32,7 +32,7 @@ public class ForexRateWrapper {
                     entity.setBaseCurrency(baseCurrency);
                     entity.setToCurrency(currencyCodeMap.get(entry.getKey().toUpperCase()).getCurrency());
                     entity.setConversionRate(new BigDecimal(entry.getValue())); // 3.673104
-                    entity.setIsActive(false);
+                    entity.setIsActive(true);
                     entity.setUpdatedOn(created_on);
                     lst.add(entity);
                 }catch (Exception e){

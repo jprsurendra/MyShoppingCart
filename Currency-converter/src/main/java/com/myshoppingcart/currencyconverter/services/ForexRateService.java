@@ -53,7 +53,7 @@ public class ForexRateService{
         */
     }
 
-    public List<ForexRateBackup> create_backup(){
+    public List<ForexRateBackup> createForexRateBackup(){
         log.info("Inside create_backup() method of ForexRateService");
         Long id;
         Date created_on = new Date();
@@ -73,7 +73,8 @@ public class ForexRateService{
     }
 
     public ForexRate findForexRateByCurrencyCode(String countryCode){
-        List<ForexRate> lst = forexRateRepository.findByToCurrency_CurrencyCode(countryCode);
+//        List<ForexRate> lst = forexRateRepository.findByToCurrency_CurrencyCode(countryCode);
+        List<ForexRate> lst = forexRateRepository.findByIsActiveAndToCurrency_CurrencyCode(true, countryCode);
         if(lst.size() > 0){
             return lst.get(0);
         }else{
@@ -86,10 +87,16 @@ public class ForexRateService{
     public List<ForexRate> refreshForexRateInDB(Map<String, CurrencyCodeMapValue> currencyCodeMap) {
         log.info("Inside refreshForexRateInDB() method of ForexRateService");
 
-        List<ForexRateBackup> lst = this.create_backup();
+        List<ForexRateBackup> lst = this.createForexRateBackup();
 
         ForexRateWrapper wrapper = restTemplate.getForObject("https://api.exchangeratesapi.io/v1/latest?access_key=XXXXXXX&base=usd", ForexRateWrapper.class);
         List<ForexRate>  allData = wrapper.toWrap(currencyCodeMap);
+
+        //List<ForexRate> oldData = forexRateRepository.findAll();
+        //oldData.forEach(forexRate -> forexRate.setIsActive(false));
+        //forexRateRepository.saveAll(oldData);
+        forexRateRepository.deleteAll();
+
         return forexRateRepository.saveAll(allData);
     }
 

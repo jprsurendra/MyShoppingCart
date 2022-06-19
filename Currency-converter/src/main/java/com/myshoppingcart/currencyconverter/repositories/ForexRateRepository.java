@@ -15,4 +15,5 @@ public interface ForexRateRepository extends JpaRepository<ForexRate, Long> {
 //    @Query("SELECT fx FROM ForexRate fx WHERE fx.toCurrency IN (SELECT c FROM Currency c WHERE LOWER(c.countryCode) = LOWER(:countryCode)) ")
 //    List<ForexRate> getByCountryCode(String countryCode);
     List<ForexRate> findByToCurrency_CurrencyCode(String countryCode);
+    List<ForexRate> findByIsActiveAndToCurrency_CurrencyCode(Boolean isActive, String countryCode);
 }

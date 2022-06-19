@@ -16,7 +16,7 @@ public class CurrencyService {
     @Autowired
     private CurrencyRepository currencyRepository;
 
-    public List<Currency> create_on_load(){
+    public List<Currency> createCurrencyListIfNotExist(){
         log.info("Inside create_on_load() method of CurrencyService");
 
         if(currencyRepository.count() == 0) {

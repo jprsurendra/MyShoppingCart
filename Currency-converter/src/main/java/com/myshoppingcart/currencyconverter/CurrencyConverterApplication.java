@@ -43,7 +43,7 @@ public class CurrencyConverterApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		log.info("Inside run() method of CurrencyConverterApplication");
-		List<Currency> lstCurrencies = currencyService.create_on_load();
+		List<Currency> lstCurrencies = currencyService.createCurrencyListIfNotExist();
 
 		Map<String, CurrencyCodeMapValue> currencyCodeMap = currencyService.getCountryCodeMap(lstCurrencies);
 
